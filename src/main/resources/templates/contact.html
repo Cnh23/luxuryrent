@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<div layout:fragment="main">
+	<!-- contact section start -->
+	<section class="about_section">
+		<!-- Jumbotron -->
+		<div class="px-4 py-5 px-md-5 text-center text-lg-start">
+			<h1 class="banner_taital mb-4">CONTACTA CON <span style="color: #FE5B29;">NOSOTROS</span></h1>
+			<div class="container">
+				<div class="row gx-lg-5">
+					<div class="col-lg-6 mb-5 mb-lg-0">
+						<div class="d-flex mb-4 text-left">
+							<i class="bi bi-geo-alt-fill flex-shrink-0 mr-3"></i>
+							<div class="mt-n1">
+								<h3>Oficina central</h3>
+								<h5 style="color: #FE5B29;">C. Tolosa, 2, 4, 28041 Madrid</h5>
+							</div>
+						</div>
+						<div class="d-flex mb-4 text-left">
+							<i class="bi bi-envelope-open flex-shrink-0 mr-3"></i>
+							<div class="mt-n1">
+								<h3>Correo Electronico</h3>
+								<h5 style="color: #FE5B29;">info.luxury@gmail.com</h5>
+							</div>
+						</div>
+						<div class="d-flex mb-4 text-left">
+							<i class="bi bi-telephone-forward flex-shrink-0 mr-3"></i>
+							<div class="mt-n1">
+								<h3>Telefono de contacto</h3>
+								<h5 style="color: #FE5B29;">(+34) 912 345 678</h5>
+							</div>
+						</div>
+						<div class="d-flex mb-2 text-left">
+							<div class="col-sm-6 col-sm-12 col-xs-12">
+								<div class="map-area">
+									<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3039.619058247439!2d-3.721367723518614!3d40.37297035830087!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd4227a0c76de045%3A0xb86372c70d662304!2sIES%20Pio%20Baroja!5e0!3m2!1sen!2ses!4v1684237904629!5m2!1sen!2ses" class="h-100 w-100" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-6 mb-5 mb-lg-0">
+						<div class="card bg-glass" style="background-color: #eee;">
+							<div class="card-body py-5 px-md-5">
+								<form>				
+									<div class="form-floating mb-4">
+										<input type="text" class="form-control" id="form3Example2" placeholder="Nombre"
+											required="required">
+										<label for="form3Example2">Nombre</label>
+									</div>
+									<div class="form-floating mb-4">
+										<input type="email" class="form-control" id="form3Example3" placeholder="Email"
+											required="required">
+										<label for="form3Example3">Email address</label>
+									</div>
+									<div class="form-floating mb-4">
+										<textarea class="form-control py-3 px-4" rows="5" id="form3Example5"
+											placeholder="Mensaje" required="required"></textarea>
+										<label for="form3Example4">Mensaje</label>
+									</div>
+
+									<!-- Submit button -->
+									<button type="submit"
+										class="btn btn-dark btn-block mb-2 font-weight-bold text-uppercase">
+										Enviar mensaje
+									</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+</html>

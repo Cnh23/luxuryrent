@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+	  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css">
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.bundle.min.js"></script>
+<div layout:fragment="main">
+<!-- Inicio de la sección del banner -->
+<div class="banner_section layout_padding">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6">
+				<div id="banner_slider" class="carousel slide" data-ride="carousel">
+					<div class="carousel-inner">
+						<div class="carousel-item active">
+							<div class="banner_taital_main">
+								<h1 class="banner_taital">Alquila ahora <br><span style="color: #FE5B29;">tu vehículo</span></h1>
+								<p class="banner_text">¡Bienvenido a la plataforma líder en alquiler de vehículos! ¿Estás preparado para disfrutar de la emoción de conducir?</p>
+								<div class="btn_main">
+									<div class="contact_bt"><a href="#">Leer más</a></div>
+									<div class="contact_bt active"><a href="contactar">Contáctanos</a></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="banner_img"><img th:src="@{/resources/img/banner.png}"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Fin de la sección del banner -->
+	<!-- about section start -->
+<div class="about_section layout_padding">
+	<div class="container">
+		<div class="about_section_2">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="image_iman"><img th:src="@{/resources/img/banner.png}" class="about_img"></div>
+				</div>
+				<div class="col-md-6">
+					<div class="about_taital_box">
+						<h1 class="about_taital">Sobre <span style="color: #FE5B29;">Luxury Rent</span></h1>
+						<p class="about_text">Si estás pensando en alquilar un vehículo de lujo, has llegado al lugar correcto. En Luxury Rent, nos enorgullece ofrecerte una amplia selección de vehículos exclusivos para que disfrutes de una experiencia de conducción excepcional.</p>
+						<p class="about_text">Nuestros vehículos están cuidadosamente seleccionados y mantenidos en condiciones óptimas, para brindarte la calidad y el confort que te mereces. Ya sea que necesites un elegante sedán para un evento especial o un potente deportivo para una aventura emocionante, tenemos la opción perfecta para ti.</p>
+						<div class="readmore_btn"><a href="#">Leer más</a></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+	<!-- about section end -->
+	<!-- choose section start -->
+<div class="choose_section layout_padding">
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<h1 class="choose_taital">¿POR QUÉ LUXURY?</h1>
+			</div>
+		</div>
+		<div class="choose_section_2">
+			<div class="row">
+				<div class="col-sm-4">
+					<div class="icon_1"><img th:src="@{/resources/img/icon-1.png}"></div>
+					<h4 class="safety_text">SEGURIDAD Y PROTECCIÓN</h4>
+					<p class="ipsum_text">Nuestra prioridad es tu seguridad y protección. Contamos con medidas rigurosas para garantizar que tengas una experiencia segura en todo momento. Nuestros vehículos están equipados con sistemas de seguridad de última generación y nuestros conductores son profesionales capacitados para brindarte un viaje seguro y sin contratiempos. Tu tranquilidad es lo más importante para nosotros.</p>
+				</div>
+				<div class="col-sm-4">
+					<div class="icon_1"><img th:src="@{/resources/img/icon-2.png}"></div>
+					<h4 class="safety_text">RESERVA EN LÍNEA</h4>
+					<p class="ipsum_text">Hacer una reserva nunca ha sido tan fácil. Con nuestro sistema de reserva en línea, puedes planificar y reservar tu viaje de lujo con solo unos pocos clics. Nuestra plataforma intuitiva te permite seleccionar el vehículo de tu elección, elegir las fechas y horarios convenientes y realizar el pago de forma segura. ¡Simplificamos el proceso para que puedas disfrutar de tu viaje sin preocupaciones!</p>
+				</div>
+				<div class="col-sm-4">
+					<div class="icon_1"><img th:src="@{/resources/img/icon-3.png}"></div>
+					<h4 class="safety_text">LOS MEJORES CONDUCTORES</h4>
+					<p class="ipsum_text">Nuestros conductores son verdaderos profesionales en su campo. Son cuidadosamente seleccionados y altamente capacitados para brindarte el mejor servicio posible. Conocen las rutas más eficientes y están comprometidos a ofrecerte un viaje cómodo y placentero. Nuestra atención al detalle y el enfoque en la satisfacción del cliente nos distinguen. Confía en nuestros expertos conductores para llevarte a tu destino con estilo y elegancia.</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+	<!-- choose section end -->
+
+<!-- gallery section start -->
+<section class="gallery_section layout_padding">
+	<div class="container">
+		<div class="row">
+			<h1 class="gallery_taital">Nuestras mejores <span style="color: #FE5B29;">ofertas</span></h1>
+		</div>
+		<div class="gallery_section_2">
+			<div class="row">
+				<div class="col-md-12 col-lg-4 mb-4 mb-lg-0" th:each="vehiculos : ${lista}">
+            <div class="gallery_box card text-black">
+              <i class="bi bi-fire" style="font-size: 1.25em; color: #FE5B29;"></i>
+              <div class="gallery_img">
+                <img th:src="${vehiculos.enlaceImagen}" class="card-img-top" />
+              </div>
+              <div class="card-body">
+                <div class="text-center">
+                  <h2 class="text-uppercase font-weight-bold mb-4" th:text="${vehiculos.marca + ' ' +vehiculos.modelo}"></h2>
+                </div>
+                <div class="d-flex justify-content-center mb-4">
+                  <div class="px-2">
+                    <i class="bi bi-car-front-fill mr-1" style="font-size: 1.25em; color: #FE5B29;">
+                    </i>
+                    <span th:text="${vehiculos.anio}"></span>
+                  </div>
+                  <div class="px-2 border-left border-right">
+                    <i class="bi bi-gear-fill mr-1" style="font-size: 1.25em; color: #FE5B29;"> </i>
+                    <span th:text="${vehiculos.tipo}"></span>
+                  </div>
+                  <div class="px-2">
+                    <i class="bi bi-speedometer2 mr-1" style="font-size: 1.25em; color: #FE5B29;">
+                    </i>
+                    <span th:text="${vehiculos.kilometraje}"></span>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-center mb-4 total font-weight-bold text-uppercase">
+                  <div class="px-2">
+                    <span class="mr-1">Precio por día</span>
+                  </div>
+                  <div class="px-2">
+                    <span style="color: #FE5B29;" class="mr-1" th:text="${vehiculos.preciopordia}+' €'"></span>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-center total font-weight-bold mt-4">
+                  <span>
+                    <button type="button" class="btn btn-sm font-weight-bold text-white"
+                      style="background-color: #FE5B29;" onclick="openModal('${vehiculos.matricula}')">
+                      <i class="bi bi-calendar-check"> </i> RESERVAR AHORA</button>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <!-- car section end -->
+            <br>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- gallery section end -->
+</div>
+
+
+</html>

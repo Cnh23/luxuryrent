@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+
+<main layout:fragment="main">
+	<section class="dashboard">
+		<!-- Jumbotron -->
+		<div class="px-4 py-5 px-md-5 text-center text-lg-start">
+			<div class="about_section row">
+				<!-- Left side columns -->
+				<div class="col-12 col-lg-6">
+					<div class="row">
+
+						<!-- Recent Sales -->
+						<div class="col-12">
+							<div class="card bg-light">
+								<div class="card-body pt-3">
+									<!-- Bordered Tabs -->
+									<ul class="nav nav-tabs nav-tabs-bordered">
+										<li class="nav-item">
+											<button class="nav-link link-dark active text-uppercase font-weight-bold"
+												data-bs-toggle="tab" data-bs-target="#reservas-overview"><i
+													class="bi bi-person-lines-fill mr-3"></i>Reservas</button>
+										</li>
+										<li class="nav-item">
+											<button class="nav-link link-dark text-uppercase font-weight-bold"
+												data-bs-toggle="tab" data-bs-target="#profile-edit"><i
+													class="bi bi-pencil-square mr-3"></i>Editar perfil</button>
+										</li>
+
+										<li class="nav-item">
+											<button class="nav-link link-dark text-uppercase font-weight-bold"
+												data-bs-toggle="tab" data-bs-target="#profile-settings"><i
+													class="bi bi-gear mr-3"></i>Configuración</button>
+										</li>
+									</ul>
+
+									<div class="tab-content pt-2">
+										<div class="tab-pane fade show active reservas-overview" id="reservas-overview">
+											<!-- Active Table -->
+											<table class="table table-borderless">
+												<thead>
+													<tr>
+														<th scope="col">Matricula</th>
+														<th scope="col">Vehiculo</th>
+														<th scope="col">Marca</th>
+														<th scope="col">Modelo</th>
+														<th scope="col">Estado</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr>
+														<th scope="row">2222XRE</th>
+														<td>Brandon Jacob</td>
+														<td>Ford</td>
+														<td>Mustang</td>
+														<td><span class="badge bg-success text-uppercase"><i
+																	class="bi bi-check-circle mr-2"></i>Approved</span>
+														</td>
+													</tr>
+												</tbody>
+											</table>
+											<!-- End Tables without borders -->
+										</div>
+
+										<div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+
+										</div>
+
+										<div class="tab-pane fade pt-3" id="profile-settings">
+
+										</div>
+
+										<div class="tab-pane fade pt-3" id="profile-change-password">
+
+										</div>
+
+									</div>
+									<!-- End Bordered Tabs -->
+								</div>
+							</div>
+
+						</div><!-- End Recent Sales -->
+					</div>
+				</div><!-- End Left side columns -->
+
+				<!-- Right side columns -->
+				<div class="col-12 col-lg-6">
+					<div class="card bg-light">
+							<div class="card-body pt-3">
+								<!-- Bordered Tabs -->
+								<ul class="nav nav-tabs nav-tabs-bordered">
+									<li class="nav-item">
+										<button class="nav-link link-dark active text-uppercase font-weight-bold"
+											data-bs-toggle="tab" data-bs-target="#profile-overview"><i
+												class="bi bi-person-lines-fill mr-3"></i>Datos del usuario</button>
+									</li>
+									<li class="nav-item">
+										<button class="nav-link link-dark text-uppercase font-weight-bold"
+											data-bs-toggle="tab" data-bs-target="#profile-edit"><i
+												class="bi bi-pencil-square mr-3"></i>Editar perfil</button>
+									</li>
+
+									<li class="nav-item">
+										<button class="nav-link link-dark text-uppercase font-weight-bold"
+											data-bs-toggle="tab" data-bs-target="#profile-settings"><i
+												class="bi bi-gear mr-3"></i>Configuración</button>
+									</li>
+
+									<li class="nav-item">
+										<button class="nav-link link-dark text-uppercase font-weight-bold"
+											data-bs-toggle="tab" data-bs-target="#profile-change-password"><i
+												class="bi bi-shield-check mr-3"></i>Change Password</button>
+									</li>
+								</ul>
+
+								<div class="tab-content pt-2">
+									<div class="tab-pane fade show active profile-overview" id="profile-overview">
+										<div th:each="usuarios:${listado}">
+										<div class="row">
+											<div class="col-lg-3 col-md-4 label ">Nombre y apellidos</div>
+											<div class="col-lg-9 col-md-8" th:text="${usuarios.nombre} + ' ' + ${usuarios.apellidos}"></div>
+										</div>
+
+										<div class="row">
+											<div class="col-lg-3 col-md-4 label">DNI</div>
+											<div class="col-lg-9 col-md-8" th:text="${usuarios.dni}"></div>
+										</div>
+
+										<div class="row">
+											<div class="col-lg-3 col-md-4 label">Teléfono</div>
+											<div class="col-lg-9 col-md-8" th:text="${usuarios.telefono}"></div>
+										</div>
+
+										<div class="row">
+											<div class="col-lg-3 col-md-4 label">Email</div>
+											<div class="col-lg-9 col-md-8" th:text="${usuarios.email}"></div>
+										</div>
+									</div>
+									</div>
+
+									<div class="tab-pane fade profile-edit pt-3" id="profile-edit">
+										<div class="card">
+											<div class="card-body">
+												<h1 class="about_taital card-title">Modificar perfil</h1>
+												<!-- Floating Labels Form -->
+												<form class="row g-3">
+													<div class="col-md-4">
+														<div class="form-floating">
+															<input type="text" class="form-control" id="floatingName"
+																placeholder="Your Name">
+															<label for="floatingName">Nombre</label>
+														</div>
+													</div>
+													<div class="col-md-4">
+														<div class="form-floating">
+															<input type="text" class="form-control"
+																id="floatingApellido" placeholder="Primer apellido">
+															<label for="floatingApellido">Primer apellido</label>
+														</div>
+													</div>
+													<div class="col-md-4">
+														<div class="form-floating">
+															<input type="text" class="form-control"
+																id="floatingApellido2" placeholder="Segundo apellido">
+															<label for="floatingApellido2">Segundo apellido</label>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-floating">
+															<input type="email" class="form-control" id="floatingEmail"
+																placeholder="Email">
+															<label for="floatingEmail">Email</label>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-floating">
+															<input type="text" class="form-control"
+																id="floatingTelefono" placeholder="Telefono">
+															<label for="floatingTelefono">Telefono</label>
+														</div>
+													</div>
+													<div class="col-12">
+														<div class="form-floating">
+															<input type="text" class="form-control" id="floatingAddress"
+																placeholder="Dirección">
+															<label for="floatingEmail">Dirección</label>
+														</div>
+													</div>
+													<!-- Select comunidad autonoma -->
+													<div class="col-md-4">
+														<div class="form-floating mb-3">
+															<select class="form-select" id="floatingSelect"
+																aria-label="State">
+																<option selected>New York</option>
+																<option value="1">Oregon</option>
+																<option value="2">DC</option>
+															</select>
+															<label for="floatingSelect">Comunidad</label>
+														</div>
+													</div>
+													<!-- Select provincia -->
+													<div class="col-md-4">
+														<div class="form-floating mb-3">
+															<select class="form-select" id="floatingSelect"
+																aria-label="State">
+																<option selected>New York</option>
+																<option value="1">Oregon</option>
+																<option value="2">DC</option>
+															</select>
+															<label for="floatingSelect">Provincia</label>
+														</div>
+													</div>
+													<!-- Select municipio -->
+													<div class="col-md-4">
+														<div class="form-floating mb-3">
+															<select class="form-select" id="floatingSelect"
+																aria-label="State">
+																<option selected>New York</option>
+																<option value="1">Oregon</option>
+																<option value="2">DC</option>
+															</select>
+															<label for="floatingSelect">Municipio</label>
+														</div>
+													</div>
+													<div class="text-center">
+														<button type="submit"
+															class="btn btn-dark text-uppercase font-weight-bold">Save
+															Changes</button>
+													</div>
+												</form><!-- End floating Labels Form -->
+
+											</div>
+										</div>
+
+									</div>
+
+									<div class="tab-pane fade pt-3" id="profile-settings">
+
+										<!-- Settings Form -->
+										<form>
+											<div class="row mb-3">
+												<label for="fullName" class="col-md-4 col-lg-3 col-form-label">Email
+													Notifications</label>
+												<div class="col-md-8 col-lg-9">
+													<div class="form-check">
+														<input class="form-check-input" type="checkbox" id="changesMade"
+															checked> <label class="form-check-label" for="changesMade">
+															Changes
+															made to your account </label>
+													</div>
+													<div class="form-check">
+														<input class="form-check-input" type="checkbox" id="newProducts"
+															checked> <label class="form-check-label" for="newProducts">
+															Information on new products and services </label>
+													</div>
+													<div class="form-check">
+														<input class="form-check-input" type="checkbox" id="proOffers">
+														<label class="form-check-label" for="proOffers"> Marketing and
+															promo
+															offers
+														</label>
+													</div>
+													<div class="form-check">
+														<input class="form-check-input" type="checkbox"
+															id="securityNotify" checked disabled> <label
+															class="form-check-label" for="securityNotify">
+															Security alerts </label>
+													</div>
+												</div>
+											</div>
+
+											<div class="text-center">
+												<button type="submit"
+													class="btn btn-dark text-uppercase font-weight-bold">Save
+													Changes</button>
+											</div>
+										</form>
+										<!-- End settings Form -->
+
+									</div>
+
+									<div class="tab-pane fade pt-3" id="profile-change-password">
+										<!-- Change Password Form -->
+										<form>
+
+											<div class="row mb-4">
+												<label for="currentPassword"
+													class="col-md-4 col-lg-3 col-form-label">Current Password</label>
+												<div class="col-md-8 col-lg-9">
+													<input name="password" type="password" class="form-control"
+														id="currentPassword">
+												</div>
+											</div>
+
+											<div class="row mb-4">
+												<label for="newPassword" class="col-md-4 col-lg-3 col-form-label">New
+													Password</label>
+												<div class="col-md-8 col-lg-9">
+													<input name="newpassword" type="password" class="form-control"
+														id="newPassword">
+												</div>
+											</div>
+
+											<div class="row mb-4">
+												<label for="renewPassword"
+													class="col-md-4 col-lg-3 col-form-label">Re-enter
+													New
+													Password</label>
+												<div class="col-md-8 col-lg-9">
+													<input name="renewpassword" type="password" class="form-control"
+														id="renewPassword">
+												</div>
+											</div>
+
+											<div class="text-center">
+												<button type="submit"
+													class="btn btn-dark text-uppercase font-weight-bold">Cambiar
+													contraseña</button>
+											</div>
+										</form>
+										<!-- End Change Password Form -->
+									</div>
+								</div>
+								<!-- End Bordered Tabs -->
+							</div>
+						</div>
+				</div>
+				<!-- End Right side columns -->
+			</div>
+
+		</div>
+	</section>
+</main>
+
+</html>

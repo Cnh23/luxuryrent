@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/css/bootstrap.min.css">
+<body>
+<div layout:fragment="main">
+	<section class="gallery_section layout_padding">
+    <div class="container">
+      <div class="row">
+        <h1 class="gallery_taital">Todos nuestros <span style="color: #FE5B29;">vehículos</span></h1>
+      </div>
+      <div class="gallery_section_2">
+        <div class="row">
+          <div class="col-md-12 col-lg-4 mb-4 mb-lg-0" th:each="vehiculos : ${lista}">
+            <!-- car section start -->
+			<div class="gallery_box card text-black">
+              <i class="bi bi-fire" style="font-size: 1.25em; color: #FE5B29;"></i>
+              <div class="gallery_img">
+                <img th:src="${vehiculos.enlaceImagen}" class="card-img-top" />
+              </div>
+              <div class="card-body">
+                <div class="text-center">
+                  <h2 class="text-uppercase font-weight-bold mb-4" th:text="${vehiculos.marca + ' ' +vehiculos.modelo}"></h2>
+                </div>
+                <div class="d-flex justify-content-center mb-4">
+                  <div class="px-2">
+                    <i class="bi bi-car-front-fill mr-1" style="font-size: 1.25em; color: #FE5B29;">
+                    </i>
+                    <span th:text="${vehiculos.anio}"></span>
+                  </div>
+                  <div class="px-2 border-left border-right">
+                    <i class="bi bi-gear-fill mr-1" style="font-size: 1.25em; color: #FE5B29;"> </i>
+                    <span th:text="${vehiculos.tipo}"></span>
+                  </div>
+                  <div class="px-2">
+                    <i class="bi bi-speedometer2 mr-1" style="font-size: 1.25em; color: #FE5B29;">
+                    </i>
+                    <span th:text="${vehiculos.kilometraje}"></span>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-center mb-4 total font-weight-bold text-uppercase">
+                  <div class="px-2">
+                    <span class="mr-1">Precio por día</span>
+                  </div>
+                  <div class="px-2">
+                    <span style="color: #FE5B29;" class="mr-1" th:text="${vehiculos.preciopordia}+' €'"></span>
+                  </div>
+                </div>
+                <div class="d-flex justify-content-center total font-weight-bold mt-4">
+                  <span>
+                    <button type="button" class="btn btn-sm font-weight-bold text-white"
+                      style="background-color: #FE5B29;" onclick="openModal('${vehiculos.matricula}')">
+                      <i class="bi bi-calendar-check"> </i> RESERVAR AHORA</button>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <!-- car section end -->
+            <br>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- gallery section end -->
+
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.0-alpha2/js/bootstrap.bundle.min.js"></script>
+</div>
+</body>
+</html>
