@@ -51,11 +51,19 @@
 							<a class="nav-link" href="iniciarsesion">Iniciar Sesión</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="contactar">Contactanos</a>
+							<a class="nav-link" href="register">Regístrate</a>
 						</li>
 						<li class="nav-item">
+							<a class="nav-link" href="contactar">Contactanos</a>
+						</li>
+						<li class="nav-item" th:if="${session.usuario != null && session.usuario.role.nombrerol == 'CLIENTE'}">
 							<a class="nav-link" href="profile">Perfil</a>
 						</li>
+						<li class="nav-item" th:if="${session.usuario != null && session.usuario.role.nombrerol == 'CLIENTE'}">
+						    <a class="nav-link" href="cerrarsesion">Cerrar Sesión</a>
+						</li>
+
+
 						
 					</ul>
 					<form class="form-inline my-2 my-lg-0">
@@ -148,7 +156,7 @@
 
 	<script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
 
-	<script th:href="@{/resources/css/form-validation.js}"></script>
+	<script src="@{/resources/css/form-validation.js}"></script>
 </body>
 
 </html>

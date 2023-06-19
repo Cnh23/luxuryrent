@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.rent.luxury"},{"l":"com.rent.luxury.config"},{"l":"com.rent.luxury.controller"},{"l":"com.rent.luxury.model"},{"l":"com.rent.luxury.repository"},{"l":"com.rent.luxury.services"}];updateSearchResults();

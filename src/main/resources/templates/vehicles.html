@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{layout/layout-dash}">
+
+<main layout:fragment="main" id="main" class="main">
+	<section class="section dashboard">
+		<div class="row">
+			<!-- Left side columns -->
+			<div class="col-lg-8">
+				<div class="row">
+					<!-- Recent Sales -->
+					<div class="col-12">
+						<div class="card recent-sales overflow-auto">
+							<div class="card-body">
+								<h5 class="card-title">Vehiculos</h5>
+
+								<table class="table table-borderless datatable">
+									<thead class="text-uppercase">
+										<tr>
+											<th scope="col">Matricula</th>
+											<th scope="col">Marca</th>
+											<th scope="col">Modelo</th>
+											<th scope="col">Acciones</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<th scope="row"><a href="#">555111SLA</a></th>
+											<td>Ford</td>
+											<td>Mustang GT</td>								
+											<td>
+												<div class="btn-group">
+													<button data-toggle="modal" class="btn btn-info btn-sm">
+														<i class="bi bi-search" aria-hidden="true"></i>
+													</button>
+													<button type="button" class="btn btn-warning btn-sm">
+														<i class="bi bi-pencil-square"></i>
+													</button>
+													<button type="button"
+														class="btn btn-danger btn-sm btnDelete">
+														<i class="bi bi-trash3"></i>
+													</button>
+												</div>
+											</td>
+										</tr>			
+									</tbody>
+								</table>
+
+							</div>
+
+						</div>
+					</div>
+					<!-- End Recent Sales -->
+				</div>
+			</div>
+			<!-- End Left side columns -->
+
+			<!-- Right side columns -->
+			<div class="col-lg-4">
+				<!-- Add Vehiculos -->
+				<div class="card">
+					<div class="card-body py-5 px-md-5">
+						<h5 class="card-title">Subir vehiculos</h5>
+						<form>
+							<div class="form-floating mb-4">
+								<label class="form-label" for="customFile">Seleccione un archivo</label>
+								<input type="file" class="form-control" id="customFile" />
+							</div>
+							<!-- Submit button -->
+							<button type="submit" class="btn btn-dark btn-block mb-4 font-weight-bold text-uppercase">Añadir</button>
+						</form>
+					</div>
+				</div>
+				<!-- End Add Vehiculos -->
+			</div>
+			<!-- End Right side columns -->
+		</div>
+	</section>
+</main>
+<!-- End #main -->
+</html>

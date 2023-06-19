@@ -20,6 +20,9 @@ public class AlquilerForm {
     private Date fechaEntrega;
     
     @NotNull
+    private Estados estado;
+    
+    @NotNull
     private Usuarios usuarios;
     
     @NotNull
@@ -60,8 +63,18 @@ public class AlquilerForm {
     public void setFechaEntrega(Date fechaEntrega) {
         this.fechaEntrega = fechaEntrega;
     }
+    
 
-    /**
+
+    public Estados getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Estados estado) {
+		this.estado = estado;
+	}
+
+	/**
      * Obtiene los usuarios del formulario.
      * 
      * @return Usuarios

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.rent.luxury.model.Alquiler;
+import com.rent.luxury.model.Usuarios;
 import com.rent.luxury.repository.AlquilerRepositorio;
 
 @Service
@@ -26,6 +27,10 @@ public class AlquilerService {
 	
     public Alquiler obtenerAlquilerPorId(Integer id) {
         return alquilerRepository.findById(id).orElse(null);
+    }
+    
+    public List<Alquiler> obtenerReservasPorUsuario(Usuarios usuario) {
+        return alquilerRepository.findByUsuarios(usuario);
     }
 
     public void actualizarAlquiler(Alquiler alquiler) {

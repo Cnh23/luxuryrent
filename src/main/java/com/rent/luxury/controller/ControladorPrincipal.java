@@ -1,6 +1,9 @@
 package com.rent.luxury.controller;
 
 import java.io.IOException;
+import java.security.Principal;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -12,6 +15,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -27,16 +31,21 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rent.luxury.model.Alquiler;
 import com.rent.luxury.model.AlquilerForm;
+import com.rent.luxury.model.Contacto;
+import com.rent.luxury.model.ContactoForm;
+import com.rent.luxury.model.Estados;
 import com.rent.luxury.model.Role;
 import com.rent.luxury.model.Usuarios;
 import com.rent.luxury.model.UsuariosForm;
 import com.rent.luxury.model.Vehiculos;
 import com.rent.luxury.model.VehiculosForm;
 import com.rent.luxury.repository.AlquilerRepositorio;
+import com.rent.luxury.repository.ContactoRepositorio;
 import com.rent.luxury.repository.RoleRepository;
 import com.rent.luxury.repository.UsuariosRepositorio;
 import com.rent.luxury.repository.VehiculosRepositorio;
 import com.rent.luxury.services.AlquilerService;
+import com.rent.luxury.services.EstadoService;
 import com.rent.luxury.services.UsuarioService;
 import com.rent.luxury.services.VehiculoService;
 
@@ -54,11 +63,15 @@ public class ControladorPrincipal {
 	@Autowired
 	private AlquilerRepositorio alquilerRepositorio;
 	@Autowired
+	private ContactoRepositorio contactoRepositorio;
+	@Autowired
 	private AlquilerService alquilerServicio;
 	@Autowired
 	private UsuarioService usuarioService;
 	@Autowired
 	private VehiculoService vehiculoService;
+	@Autowired
+	private EstadoService estadoService;
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////    
 	@GetMapping(path = "/inicio")
@@ -86,6 +99,8 @@ public class ControladorPrincipal {
 	    return "index";
 	}
 	
+	////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	@GetMapping("/catalogovehiculos")
 	public String getCatalogo(Model modelo) {
 	    List<Vehiculos> vehiculos = (List<Vehiculos>) vehiculosRepositorio.findByAlquiladoFalse();
@@ -98,11 +113,126 @@ public class ControladorPrincipal {
 	    modelo.addAttribute("lista", vehiculos);
 		return "catalogo";
 	}
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
 	@GetMapping("/iniciarsesion")
 	public String getInicioSesion(UsuariosForm usuForm) {
 		return "/iniciarsesion";
 	}
+	@PostMapping("/iniciarsesion")
+	public String checksesionini(@Valid UsuariosForm usuForm, BindingResult bindingResult, HttpSession session,
+	Model modelo) {
+	String email = usuForm.getEmail();
+	String passwd = usuForm.getPassword();
+	Optional<Usuarios> usuarioEncontrado = usuariosRepositorio.findByEmail(email);
+	if (usuarioEncontrado.isPresent()) {
+	// Almacenar el rol del usuario en la variable de sesión
+	session.setAttribute("rol", usuarioEncontrado.get().getRole().getNombrerol());
+	// Almacenar el objeto Usuario en la sesión
+	session.setAttribute("usuario", usuarioEncontrado.get());
+	
+	if (usuarioEncontrado.get().getRole().getNombrerol().equals("ADMIN")
+	&& usuarioEncontrado.get().getPassword().equals(passwd)) {
+	return "redirect:/dashboard";
+	}  else if (usuarioEncontrado.get().getRole().getNombrerol().equals("CLIENTE")
+	&& usuarioEncontrado.get().getPassword().equals(passwd)) {
+	return "redirect:/inicio";
+	}
+	}
+	modelo.addAttribute("mensaje",
+	"El correo " + usuForm.getEmail() + " no existe, o la contraseña es incorrecta.");
+	return "iniciarsesion";
+	}
+	
+	@GetMapping("/cerrarsesion")
+	public String cerrarSesion(HttpSession session) {
+	session.invalidate();
+	return "redirect:/inicio";
+	}
+	
+	@PostMapping("/darseDeBaja")
+	public String darseDeBaja(HttpSession session, Principal principal) {
+	    if (principal == null) {
+	        // El usuario no está autenticado, redirige a la página de inicio de sesión
+	        return "redirect:/iniciarsesion";
+	    }
+	    // Obtener el usuario en sesión
+	    Usuarios usuario = (Usuarios) session.getAttribute("usuario");
+
+	    // Eliminar al usuario de la base de datos
+	    usuariosRepositorio.delete(usuario);
+
+	    // Eliminar la sesión del usuario
+	    session.invalidate();
+
+	    return "redirect:/inicio";
+	}
+
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	@GetMapping("/modificarusuarioperfil")
+	public String getmodificardatosperfil(Model modelo, HttpSession session, Principal principal) {
+	    if (principal == null) {
+	        // El usuario no está autenticado, redirige a la página de inicio de sesión
+	        return "redirect:/iniciarsesion";
+	    }
+	    Usuarios usuario = (Usuarios) session.getAttribute("usuario");
+	    
+	    modelo.addAttribute("usuario", usuario);
+
+	    return "profile";
+	}
+
+	@PostMapping("/modificarusuarioperfil")
+	public String modificarUsuarioPerfil(@ModelAttribute("usuario") Usuarios usuario, BindingResult result, Principal principal) {
+	    if (principal == null) {
+	        // El usuario no está autenticado, redirige a la página de inicio de sesión
+	        return "redirect:/iniciarsesion";
+	    }
+		
+		if (result.hasErrors()) {
+	        return "profile";
+	    }
+	    usuarioService.actualizarUsuario(usuario);
+	    return "redirect:/profile";
+	}
+	
+	@PostMapping("/cambiarcontrasena")
+	public String cambiarContrasena(@RequestParam("currentPassword") String currentPassword,
+	                                @RequestParam("newPassword") String newPassword,
+	                                @RequestParam("confirmPassword") String confirmPassword,
+	                                HttpSession session,
+	                                Model model, Principal principal) {
+	    if (principal == null) {
+	        // El usuario no está autenticado, redirige a la página de inicio de sesión
+	        return "redirect:/iniciarsesion";
+	    }
+	    // Obtener el usuario actual de la sesión (asumiendo que tienes un atributo "usuario" en la sesión)
+	    Usuarios usuario = (Usuarios) session.getAttribute("usuario");
+
+	    // Verificar que la contraseña actual sea correcta
+	    if (!usuario.getPassword().equals(currentPassword)) {
+	        model.addAttribute("error", "La contraseña actual no es correcta");
+	        return "redirect:/profile"; // Cambia "profile" por la vista correspondiente
+	    }
+
+	    // Verificar que la nueva contraseña y la confirmación coincidan
+	    if (!newPassword.equals(confirmPassword)) {
+	        model.addAttribute("error", "La nueva contraseña y la confirmación no coinciden");
+	        return "redirect:/profile"; // Cambia "profile" por la vista correspondiente
+	    }
+
+	    // Actualizar la contraseña del usuario en la base de datos
+	    usuario.setPassword(newPassword);
+	    usuariosRepositorio.save(usuario);
+
+	    model.addAttribute("success", "La contraseña se ha cambiado correctamente");
+	    return "redirect:/profile"; // Cambia "profile" por la vista correspondiente
+	}
+
+	
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 	@GetMapping("/about")
 	public String getInfo(UsuariosForm usuForm) {
@@ -113,102 +243,165 @@ public class ControladorPrincipal {
 	public String getSericios(UsuariosForm usuForm) {
 		return "/services";
 	}
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	@GetMapping("/profile")
-	public String getperfil(@RequestParam(name = "busqueda", required = false) String busqueda, Model modelo) {
-		List<Role> listado = (List<Role>) rolesRepositorio.findAll();
-		List<Usuarios> usuarios = new ArrayList<Usuarios>();
-		modelo.addAttribute("listadoroles", listado);
-		if (busqueda != null && !busqueda.isEmpty()) {
-			usuarios = usuariosRepositorio.findByRoleNombrerol(busqueda);
-		} else {
-			usuarios = (List<Usuarios>) usuariosRepositorio.findAll();
-		}
-		modelo.addAttribute("listado", usuarios);
-		return "/profile";
+	public String getperfil(Model modelo, HttpSession session, Principal principal) {
+	    if (principal == null) {
+	        // El usuario no está autenticado, redirige a la página de inicio de sesión
+	        return "redirect:/iniciarsesion";
+	    }
+		
+	    Usuarios usuario = (Usuarios) session.getAttribute("usuario");
+
+	    // Obtener las reservas del usuario
+	    List<Alquiler> reservas = alquilerServicio.obtenerReservasPorUsuario(usuario);
+
+	    // Agregar las reservas al modelo
+	    modelo.addAttribute("reservas", reservas);
+
+	    // Agregar el usuario al modelo
+	    modelo.addAttribute("usuario", usuario);
+
+	    // Devolver la vista "profile.html"
+	    return "/profile";
 	}
-	
-	@GetMapping("/registro")
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	@GetMapping("/register")
 	public String getRegistro(UsuariosForm usuForm) {
-		return "/registro";
-	}
-
-	@GetMapping("/inicioadmin")
-	public String getInicioadmin(Model model) {
-		return "inicioadmin";
-	}
-
-	@GetMapping("/inicioempleado")
-	public String getInicioempleado(Model model) {
-		return "inicioempleado";
+		return "/register";
 	}
 	
-	@GetMapping("/contactar")
-	public String getContacto(Model model) {
-		return "contact";
-	}
-	
-//////////////////////////////////////////////////////////////////////////////////////////////////////////	
-	@PostMapping("/mostrarOpcion")
-	public String mostrarOpcion(@RequestParam("opcion") int opcion, Model model) {
-		model.addAttribute("opcion", opcion);
-		return "/inicioadmin";
-	}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	@PostMapping("/mostrarOpcionEmp")
-	public String mostrarOpcionEmpleado(@RequestParam("opcion") int opcion, Model model) {
-		model.addAttribute("opcion", opcion);
-		return "/inicioempleado";
-	}
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////////	
-	@PostMapping("/iniciarsesion")
-	public String checksesionini(@Valid UsuariosForm usuForm, BindingResult bindingResult, HttpSession session,
-			Model modelo) {
-		String email = usuForm.getEmail();
-		String passwd = usuForm.getPassword();
-		Optional<Usuarios> usuarioEncontrado = usuariosRepositorio.findByEmail(email);
-		if (usuarioEncontrado.isPresent()) {
-			// Almacenar el rol del usuario en la variable de sesión
-			session.setAttribute("rol", usuarioEncontrado.get().getRole().getNombrerol());
-			// Almacenar el objeto Usuario en la sesión
-			session.setAttribute("usuario", usuarioEncontrado.get());
-
-			if (usuarioEncontrado.get().getRole().getNombrerol().equals("ADMIN")
-					&& usuarioEncontrado.get().getPassword().equals(passwd)) {
-				return "redirect:/index";
-			}  else if (usuarioEncontrado.get().getRole().getNombrerol().equals("CLIENTE")
-					&& usuarioEncontrado.get().getPassword().equals(passwd)) {
-				return "redirect:/index";
-			}
-		}
-		modelo.addAttribute("mensaje",
-				"El correo " + usuForm.getEmail() + " no existe, o la contraseña es incorrecta.");
-		return "iniciarsesion";
-	}
-
-	@GetMapping("/cerrarsesion")
-	public String cerrarSesion(HttpSession session) {
-		session.invalidate();
-		return "redirect:/index";
-	}
-	
-//////////////////////////////////////////////////////////////////////////////////////////////////////////
-	@PostMapping("/registro")
+	@PostMapping("/register")
 	public String checkregistro(@Valid UsuariosForm usuForm, BindingResult bindingResult, HttpSession session,
 			Model modelo) {
 		if (bindingResult.hasErrors()) {
 			return "/registro";
 		}
 		Role rol = rolesRepositorio.findByNombrerol("CLIENTE");
-		Usuarios usuario = new Usuarios(usuForm.getNombre(), usuForm.getApellidos(), usuForm.getDni(),
+		Usuarios usuario = new Usuarios(usuForm.getNombre(), usuForm.getApellidos(), usuForm.getDni(), usuForm.getDireccion(),
 				usuForm.getTelefono(), usuForm.getEmail(), usuForm.getPassword(), rol);
 		usuariosRepositorio.save(usuario);
 		modelo.addAttribute("mensaje", "Gracias por registrarte, " + usuForm.getNombre() + " " + usuForm.getApellidos()
-				+ ". Por favor, pulse el botón volver para iniciar sesión.");
-		return "/registro";
+				+ ". Por favor, Inicie sesión con sus credenciales.");
+		return "/register";
 	}
+	@GetMapping("/contactar")
+	public String getInsertarvehiculos(ContactoForm contactoForm, Model modelo) {
+		return "/contact";
+	}
+
+	@PostMapping(path = "/contactar")
+	public String checkvehiculosInfo(@Valid ContactoForm contactoForm, BindingResult bindingResult, Model modelo) {
+		if (bindingResult.hasErrors()) {
+			modelo.addAttribute("mensaje", "");
+			return "/contact";
+		}
+		Contacto contacto = new Contacto(contactoForm.getNombre(), contactoForm.getEmail(), contactoForm.getMensaje());
+		contactoRepositorio.save(contacto);
+		modelo.addAttribute("mensaje", "Su mensaje ha sido enviado satisfactoriamente. Por favor, espere a que nos pongamos en contacto con usted.");
+        // Limpiar los campos
+        ContactoForm nuevoContactoForm = new ContactoForm();
+        modelo.addAttribute("contactoForm", nuevoContactoForm);
+		return "/contact";
+	}
+	
+	@PostMapping("/reserva")
+    public String postReserva(@RequestParam("vehiculoId") Integer vehiculoId,
+                              @RequestParam("fechaRecogida") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaRecogida,
+                              @RequestParam("fechaEntrega") @DateTimeFormat(pattern = "yyyy-MM-dd") Date fechaEntrega,
+                              HttpSession session, Principal principal) {
+	    if (principal == null) {
+	        // El usuario no está autenticado, redirige a la página de inicio de sesión
+	        return "redirect:/iniciarsesion";
+	    }
+        // Obtener el usuario de la sesión
+        Usuarios usuario = (Usuarios) session.getAttribute("usuario");
+
+        // Obtener el vehículo por su ID
+        Vehiculos vehiculo = vehiculoService.obtenerVehiculoPorId(vehiculoId);
+
+        if (vehiculo == null) {
+            // Manejar el caso en el que el vehículo no existe
+            return "El vehículo seleccionado no existe.";
+        }
+
+        // Resto de la lógica de validación y creación del alquiler
+        LocalDate fechaRecogidaLocal = fechaRecogida.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate fechaEntregaLocal = fechaEntrega.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        int diasAlquiler = (int) ChronoUnit.DAYS.between(fechaRecogidaLocal, fechaEntregaLocal);
+        if (diasAlquiler < 3) {
+            fechaEntregaLocal = fechaRecogidaLocal.plusDays(3);
+        }
+
+        // Validar si el vehículo ya está alquilado en el rango de fechas especificado
+        List<Alquiler> alquileresVehiculo = alquilerRepositorio.findByVehiculoIdAndFechas(vehiculoId, fechaRecogida, fechaEntrega);
+        if (!alquileresVehiculo.isEmpty()) {
+            // Manejar el caso en el que el vehículo ya está alquilado en el rango de fechas especificado
+            return "El vehículo ya está alquilado en el rango de fechas especificado.";
+        }
+
+        // Validar si el cliente ya tiene un vehículo alquilado en el rango de fechas especificado
+        List<Alquiler> alquileresCliente = alquilerRepositorio.findByUsuariosIdAndFechas(usuario.getId(), fechaRecogida, fechaEntrega);
+        if (!alquileresCliente.isEmpty()) {
+            // Manejar el caso en el que el cliente ya tiene un vehículo alquilado en el rango de fechas especificado
+            return "El cliente ya tiene un vehículo alquilado en el rango de fechas especificado.";
+        }
+
+        // Crear el objeto Alquiler con los datos proporcionados
+        Estados estado = estadoService.obtenerEstadoPorNombre("APROBADA"); // Obtener el estado por defecto
+        Alquiler alquiler = new Alquiler(fechaRecogida, fechaEntrega, usuario, estado, vehiculo);
+
+        // Guardar el alquiler en tu repositorio o servicio correspondiente
+        alquilerRepositorio.save(alquiler);
+
+        // Redirigir al catálogo o a la página de confirmación de reserva
+        return "redirect:/catalogovehiculos";
+    }
+
+
+	@GetMapping("/dashboard")
+	public String getDashboard(Model model, HttpSession session) {
+	    Usuarios usuario = (Usuarios) session.getAttribute("usuario");
+
+	    if (usuario == null) {
+	        // El usuario no está autenticado, redirige a la página de inicio de sesión
+	        return "redirect:/iniciarsesion";
+	    }
+
+	    String username = usuario.getNombre(); // Obtén el nombre de usuario desde el objeto Usuarios
+	    model.addAttribute("username", username); // Agrega el nombre de usuario al modelo
+	    return "dashboard";
+	}
+
+	
+	@GetMapping("/rents")
+	public String getRents(@RequestParam(defaultValue = "asc") String orden, Model model, HttpSession session) {
+		List<Alquiler> alquileres;
+		if (orden.equals("desc")) {
+			alquileres = alquilerServicio.obtenerAlquileresOrdenadosPorFechaDescendente();
+		} else {
+			alquileres = alquilerServicio.obtenerAlquileresOrdenadosPorFechaAscendente();
+		}
+		model.addAttribute("listado", alquileres);
+		model.addAttribute("orden", orden);
+		return "/rents";
+	}
+	
+	@GetMapping("/users")
+	public String getUsers(UsuariosForm usuForm) {
+		return "/users";
+	}
+	
+	@GetMapping("/vehicles")
+	public String getVehicles(UsuariosForm usuForm) {
+		return "vehicles";
+	}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////	
 	@GetMapping(path = "/listausuarios")
@@ -337,7 +530,7 @@ public class ControladorPrincipal {
 			return "/insertarusuarios";
 		}
 		modelo.addAttribute("listadoroles", listado);
-		Usuarios usuario = new Usuarios(usuForm.getNombre(), usuForm.getApellidos(), usuForm.getDni(),
+		Usuarios usuario = new Usuarios(usuForm.getNombre(), usuForm.getApellidos(), usuForm.getDni(), usuForm.getDireccion(),
 				usuForm.getTelefono(), usuForm.getEmail(), usuForm.getPassword(), usuForm.getRole());
 		usuariosRepositorio.save(usuario);
 		modelo.addAttribute("mensaje", "Usuario " + usuForm.getNombre() + " " + usuForm.getApellidos()
@@ -412,7 +605,7 @@ public class ControladorPrincipal {
 					"El cliente ya tiene un vehículo alquilado en el rango de fechas especificado.");
 			return "insertaralquiler";
 		}
-		Alquiler alquiler = new Alquiler(alqForm.getFechaRecogida(), alqForm.getFechaEntrega(), alqForm.getUsuarios(),
+		Alquiler alquiler = new Alquiler(alqForm.getFechaRecogida(), alqForm.getFechaEntrega(), alqForm.getUsuarios(), alqForm.getEstado(),
 				alqForm.getVehiculo());
 		alquilerRepositorio.save(alquiler);
 		modelo.addAttribute("mensaje",
@@ -539,7 +732,7 @@ public class ControladorPrincipal {
 	public String eliminarAlquiler(@RequestParam Integer id) {
 		// Eliminar usuario por ID
 		alquilerRepositorio.deleteById(id);
-		return "redirect:/listarent";
+		return "redirect:/rents";
 	}
 	
 	@GetMapping("/usuarios.json")

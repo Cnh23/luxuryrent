@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{layout/layout-dash}">
+
+<main layout:fragment="main" id="main" class="main">
+	<section class="section dashboard">
+		<div class="row">
+			<!-- Left side columns -->
+			<div class="col-lg-8">
+				<div class="row">
+					<!-- Recent Sales -->
+					<div class="col-12">
+						<div class="card recent-sales overflow-auto">
+							<div class="card-body">
+								<h5 class="card-title">Clientes</h5>
+
+								<table class="table table-borderless datatable">
+									<thead class="text-uppercase">
+										<tr>
+											<th scope="col">Documento</th>
+											<th scope="col">Cliente</th>
+											<th scope="col">Email</th>
+											<th scope="col">Telefono</th>
+											<th scope="col">Fecha alta</th>
+											<th scope="col">Rol</th>
+											<th scope="col">Acciones</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<th scope="row"><a href="#">02569429F</a></th>
+											<td>Sebastian Hurtado</td>
+											<td><a href="#" class="text-primary">shurtadogarcia97@gmail.com</a></td>
+											<td>611417154</td>
+											<td>17/06/2023</td>
+											<td>Administrador</td>
+											<td>
+												<div class="btn-group">
+													<button data-toggle="modal" class="btn btn-info btn-sm">
+														<i class="bi bi-search" aria-hidden="true"></i>
+													</button>
+													<button type="button" class="btn btn-warning btn-sm">
+														<i class="bi bi-pencil-square"></i>
+													</button>
+													<button type="button"
+														class="btn btn-danger btn-sm btnDelete">
+														<i class="bi bi-trash3"></i>
+													</button>
+												</div>
+											</td>
+										</tr>
+										<tr>
+											<th scope="row"><a href="#">02569429F</a></th>
+											<td>Sebastian Hurtado</td>
+											<td><a href="#" class="text-primary">shurtadogarcia97@gmail.com</a></td>
+											<td>611417154</td>
+											<td>17/06/2023</td>
+											<td>Administrador</td>
+											<td>
+												<div class="btn-group">
+													<button data-toggle="modal" class="btn btn-info btn-sm">
+														<i class="bi bi-search" aria-hidden="true"></i>
+													</button>
+													<button type="button" class="btn btn-warning btn-sm">
+														<i class="bi bi-pencil-square"></i>
+													</button>
+													<button type="button"
+														class="btn btn-danger btn-sm btnDelete">
+														<i class="bi bi-trash3"></i>
+													</button>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+
+							</div>
+
+						</div>
+					</div>
+					<!-- End Recent Sales -->
+				</div>
+			</div>
+			<!-- End Left side columns -->
+
+			<!-- Right side columns -->
+			<div class="col-lg-4">
+				<!-- Add User -->
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Añadir usuarios</h5>
+						<form>
+							<!-- 2 column grid layout with text inputs for the first and last names -->
+							<div class="row">
+								<div class="col-md-6 mb-4">
+									<div class="form-floating">
+										<input type="text" id="form3Example1" class="form-control"
+											placeholder="Nombre" />
+									</div>
+								</div>
+								<div class="col-md-6 mb-4">
+									<div class="form-floating">
+										<input type="text" id="form3Example2" class="form-control"
+											placeholder="Apellido" /> 
+									</div>
+								</div>
+							</div>
+
+							<!-- Email input -->
+							<div class="form-floating mb-4">
+								<input type="email" id="form3Example3" class="form-control"
+									placeholder="name@example.com" /> 
+							</div>
+							<!-- Password input -->
+							<div class="form-floating mb-4">
+								<input type="password" id="form3Example4" class="form-control"
+									placeholder="Password" />
+							</div>
+
+							<!-- Submit button -->
+							<button type="submit"
+								class="btn btn-dark btn-block mb-4 font-weight-bold text-uppercase">
+								Añadir</button>
+						</form>
+					</div>
+				</div>
+				<!-- End Add User -->
+			</div>
+			<!-- End Right side columns -->
+		</div>
+	</section>
+</main>
+<!-- End #main -->
+</html>

@@ -2,6 +2,8 @@ package com.rent.luxury.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -30,6 +32,9 @@ public class Usuarios {
     @Column(nullable = false, unique = true)
     private String dni;
     
+    @Column(nullable = false)
+    private String direccion;
+    
     @Column(nullable = false, unique = true)
     private String telefono;
     
@@ -41,9 +46,11 @@ public class Usuarios {
     
     @ManyToOne
     @JoinColumn(name = "role_id")
+    @JsonIgnore
     private Role role;
     
     @OneToMany(mappedBy="usuarios", cascade = CascadeType.REMOVE)
+    @JsonIgnore
     private List<Alquiler> listaAlquiler;
     
     /**
@@ -52,16 +59,18 @@ public class Usuarios {
      * @param nombre     el nombre del usuario.
      * @param apellidos  los apellidos del usuario.
      * @param dni        el DNI del usuario.
+     * @param direccion  la dirección del usuario.
      * @param telefono   el número de teléfono del usuario.
      * @param email      el correo electrónico del usuario.
      * @param password   la contraseña del usuario.
      * @param role       el rol del usuario.
      */
-    public Usuarios(String nombre, String apellidos, String dni, String telefono, String email, String password, Role role) {
+    public Usuarios(String nombre, String apellidos, String dni, String direccion, String telefono, String email, String password, Role role) {
         super();
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.dni = dni;
+        this.direccion = direccion;
         this.telefono = telefono;
         this.email = email;
         this.password = password;
@@ -145,6 +154,24 @@ public class Usuarios {
      */
     public void setDni(String dni) {
         this.dni = dni;
+    }
+    
+    /**
+     * Obtiene el DNI del usuario.
+     * 
+     * @return el DNI del usuario.
+     */
+    public String getDireccion() {
+        return direccion;
+    }
+
+    /**
+     * Establece el DNI del usuario.
+     * 
+     * @param dni el DNI del usuario.
+     */
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
     }
 
     /**
@@ -239,7 +266,7 @@ public class Usuarios {
 
     @Override
     public String toString() {
-        return String.format("Clientes [id=%s, nombre=%s, apellidos=%s, dni=%s, telefono=%s, email=%s, password=%s]",
-                id, nombre, apellidos, dni, telefono, email, password);
+        return String.format("Clientes [id=%s, nombre=%s, apellidos=%s, dni=%s, direccion=%s, telefono=%s, email=%s, password=%s]",
+                id, nombre, apellidos, dni, direccion, telefono, email, password);
     }
 }

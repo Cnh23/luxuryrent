@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{layout/layout-dash}">
+
+<main layout:fragment="main" id="main" class="main">
+	<section class="section dashboard">
+		<div class="row">
+			<!-- Left side columns -->
+			<div class="col-lg-8">
+				<div class="row">
+					<!-- Recent Sales -->
+					<div class="col-12">
+						<div class="card recent-sales overflow-auto">
+							<div class="card-body">
+								<h5 class="card-title">Alquileres</h5>
+
+								<table class="table table-borderless datatable">
+									<thead class="text-uppercase">
+										<tr>
+											<th>Fecha de reserva</th>
+											<th>Fecha de recogida</th>
+											<th>Fecha de entrega</th>
+											<th>Precio</th>
+											<th>DNI usuario</th>
+											<th>Id vehículo</th>
+											<th>Km vehículo</th>
+											<th>Estado</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="alquiler:${listado}">
+											<td>
+												<div class="btn-group">
+													<button data-toggle="modal" class="btn btn-info btn-sm">
+														<i class="bi bi-search" aria-hidden="true"></i>
+													</button>
+													<button type="button" class="btn btn-warning btn-sm">
+														<a th:href="@{/modificaralquiler(id=${alquiler.id})}">
+															<i class="bi bi-pencil-square"></i>
+														</a>
+													</button>
+													<button type="button" class="btn btn-danger btn-sm btnDelete">
+														<a th:href="@{/eliminaralquiler(id=${alquiler.id})}">
+															<i class="bi bi-trash3"></i>
+														</a>
+													</button>
+												</div>
+											</td>
+											<th th:text="${#dates.format(alquiler.fechaReserva, 'dd/MM/yyyy')}"></th>
+											<td th:text="${#dates.format(alquiler.fechaRecogida, 'dd/MM/yyyy')}"></td>
+											<td th:text="${#dates.format(alquiler.fechaEntrega, 'dd/MM/yyyy')}"></td>
+											<td th:text="${alquiler.precio}"></td>
+											<td th:text="${alquiler.usuarios?.dni}"></td>
+											<td th:text="${alquiler.vehiculo?.id}"></td>
+											<td th:text="${alquiler.vehiculo?.kilometraje}"></td>
+											<td class="text-white">
+												<span class="badge bg-success text-uppercase">
+													<i class="bi bi-check-circle mr-2"></i>Entregado
+												</span>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<!-- End Recent Sales -->
+				</div>
+			</div>
+			<!-- End Left side columns -->
+<script>
+function exportToJson() {
+    fetch('/alquiler.json')
+        .then(response => response.json())
+        .then(data => {
+            const fileName = 'alquileres.json';
+            const dataStr = JSON.stringify({ alquiler: data });
+            const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+            const linkElement = document.createElement('a');
+            linkElement.setAttribute('href', dataUri);
+            linkElement.setAttribute('download', fileName);
+            document.body.appendChild(linkElement);
+            linkElement.click();
+            document.body.removeChild(linkElement);
+        })
+        .catch(error => console.error(error));
+}
+</script>
+			<!-- Right side columns -->
+			<div class="col-lg-4">
+				<!-- Add Alquiler -->
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Nueva reserva</h5>
+						<form>
+							<div class="text-center">
+								<a th:href="@{/insertaralquiler}" class="btn btn-dark btn-block mb-4 font-weight-bold text-uppercase">
+									Crear reserva
+								</a>
+							</div>
+						</form>
+					</div>
+				</div>
+				<!-- End Add Alquiler -->
+				<!-- Descargar Alquileres -->
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Descargar reservas</h5>
+        <div class="text-center">
+ 			<button type="button" class="btn btn-warning" onclick="exportToJson()">Exportar JSON</button>
+        </div>
+					</div>
+				</div>
+				<!-- Fin Descargar Alquileres -->
+			</div>
+			<!-- End Right side columns -->
+		</div>
+	</section>
+</main>
+<!-- End #main -->
+
+</html>

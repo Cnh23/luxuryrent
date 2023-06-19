@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{layout/layout-dash}">
+
+<main layout:fragment="main" id="main" class="main">
+	<section class="section dashboard">
+		<div class="row">
+			<!-- Left side columns -->
+			<div class="col-lg-8">
+				<div class="row">
+					<!-- Recent Sales -->
+					<div class="col-12">
+						<div class="card recent-sales overflow-auto">
+							<div class="card-body">
+								<h5 class="card-title">Clientes</h5>
+
+								<table class="table table-borderless datatable">
+									<thead class="text-uppercase">
+										<tr>
+											<th scope="col">Nombre</th>
+											<th scope="col">Apellidos</th>
+											<th scope="col">DNI</th>
+											<th scope="col">Dirección</th>
+											<th scope="col">Telefono</th>
+											<th scope="col">Email</th>
+											<th scope="col">Rol</th>
+											<th scope="col"></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="usuarios:${listado}">
+										<td th:text="${usuarios.nombre}"></td>
+										<td th:text="${usuarios.apellidos}"></td>
+										<td th:text="${usuarios.dni}"></td>
+										<td th:text="${usuarios.direccion}"></td>
+										<td th:text="${usuarios.telefono}"></td>
+										<td th:text="${usuarios.email}"></td>
+										<td th:text="${usuarios.role?.nombrerol}"></td>
+											<td>
+												<div class="btn-group">
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+
+							</div>
+
+						</div>
+					</div>
+					<!-- End Recent Sales -->
+				</div>
+			</div>
+			<!-- End Left side columns -->
+
+			<!-- Right side columns -->
+			<div class="col-lg-4">
+				<!-- Add User -->
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">Añadir usuarios</h5>
+						<form class="h-70" th:action="@{/insertarusuarios}"
+										th:object="${usuariosForm}" method="post">
+									<p class="text-primary" th:text=${mensaje}></p>
+									<!-- 2 column grid layout with text inputs for the first and last names -->
+									<div class="row">
+										<div class="col-md-6 mb-4">
+											<div class="form-floating">
+												<input placeholder="Nombre" type="text" th:field="*{nombre}"
+												class="form-control" id="nombre" name="nombre"
+												th:required="true"
+												th:classappend="${#fields.hasErrors('nombre')}? 'is-invalid'" />
+												<label for="form3Example1"></label>
+											<div class="invalid-feedback">
+												<span th:if="${#fields.hasErrors('nombre')}"
+													th:errors="*{nombre}"></span>
+											</div>
+											</div>
+										</div>
+										<div class="col-md-6 mb-4">
+											<div class="form-floating">
+												<input placeholder="Apellidos" type="text" th:field="*{apellidos}"
+												class="form-control" id="apellidos" name="apellidos"
+												th:required="true"
+												th:classappend="${#fields.hasErrors('apellidos')}? 'is-invalid'" />
+												<label class="form-label" for="form3Example2"></label>
+											<div class="invalid-feedback">
+												<span th:if="${#fields.hasErrors('apellidos')}"
+													th:errors="*{apellidos}"></span>
+											</div>
+											</div>
+										</div>
+									</div>
+									<div class="form-floating mb-4">
+										<input placeholder="DNI" type="text" th:field="*{dni}"
+												class="form-control" id="dni" name="dni" th:required="true"
+												th:classappend="${#fields.hasErrors('dni')}? 'is-invalid'" />
+										<label for="form3Example5"></label>
+									<div class="invalid-feedback">
+										<span th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}"></span>
+									</div>
+									</div>
+									<div class="form-floating mb-4">
+										<input placeholder="Teléfono" type="tel" th:field="*{telefono}"
+												class="form-control" id="telefono" name="telefono"
+												th:required="true"
+												th:classappend="${#fields.hasErrors('telefono')}? 'is-invalid'" />
+										<label for="form3Example6"></label>
+											<div class="invalid-feedback">
+												<span th:if="${#fields.hasErrors('telefono')}"
+													th:errors="*{telefono}"></span>
+											</div>
+									</div>
+									<div class="form-floating mb-4">
+										<input placeholder="Dirección" type="tel" th:field="*{direccion}"
+												class="form-control" id="direccion" name="direccion"
+												th:required="true"
+												th:classappend="${#fields.hasErrors('telefono')}? 'is-invalid'"/>
+										<label for="form3Example4"></label>
+									</div>	
+									<!-- Email input -->
+									<div class="form-floating mb-4">
+										<input 	placeholder="Correo electrónico" type="email"
+												th:field="*{email}" class="form-control" id="email"
+												name="email" th:required="true"
+												th:classappend="${#fields.hasErrors('email')}? 'is-invalid'" /> 
+										<label for="form3Example3"></label>
+																					<div class="invalid-feedback">
+												<span th:if="${#fields.hasErrors('email')}"
+													th:errors="*{email}"></span>
+											</div>
+									</div>
+									<!-- Password input -->
+									<div class="form-floating mb-4">
+										<input placeholder="Contraseña" type="password"
+												th:field="*{password}" class="form-control" id="password"
+												name="password" th:required="true"
+												th:classappend="${#fields.hasErrors('password')}? 'is-invalid'" /> 
+										<label for="form3Example4"></label>
+																					<div class="invalid-feedback">
+												<span th:if="${#fields.hasErrors('password')}"
+													th:errors="*{password}"></span>
+											</div>
+									</div>
+									<!-- Password input -->
+									<div class="form-floating mb-4">
+											<label class="form-label" for="form3Example4"></label>
+							              <select th:field="*{role}" class="form-select">
+							                <option value="" disabled selected>Selecciona una opción</option>
+							                <option th:each="role:${listadoroles}" th:value="${role.id}" th:text="${role.nombrerol}" >ROL ERROR</option>
+							              </select>
+									</div>
+
+
+							<!-- Submit button -->
+							<button type="submit"
+								class="btn btn-dark btn-block mb-4 font-weight-bold text-uppercase">Añadir</button>
+						</form>
+					</div>
+				</div>
+				<!-- End Add User -->
+			</div>
+			<!-- End Right side columns -->
+		</div>
+	</section>
+</main>
+<!-- End #main -->
+</html>

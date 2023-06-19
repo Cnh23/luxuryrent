@@ -1,0 +1,162 @@
+<!doctype html>
+<!-- http://localhost:8090/luxury/home -->
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout" lang="es"
+	class="h-100">
+
+<head>
+	<title>Luxury Rent</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+	<!-- bootstrap css -->
+	<link rel="stylesheet" th:href="@{/resources/css/bootstrap.min.css}" />
+	<!-- Style -->
+	<link rel="stylesheet" th:href="@{/resources/css/style.css}" />
+	<!-- Responsive-->
+	<link rel="stylesheet" th:href="@{/resources/css/responsive.css}" />
+
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+	<!-- CODIGO DE LA BARRA DE NAVEGACION -->
+	<div class="header_section">
+		<div class="container">
+			<nav class="navbar navbar-expand-lg navbar-light">
+				<a class="navbar-brand" href="inicio"><img th:src="@{/resources/img/logoprincipal.png}" width="80"
+						height="80"></a>
+				<button class="navbar-toggler" type="button" data-toggle="collapse"
+					data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+					aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav ml-auto">
+						<li class="nav-item">
+							<a class="nav-link" href="inicio">Inicio</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="about">Luxury</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="services">Servicios</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="catalogovehiculos">Catálogo</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="iniciarsesion">Iniciar Sesión</a>
+						</li>
+						<li class="nav-item" th:if="${session.usuario == null || session.usuario.role.nombrerol != 'CLIENTE'}">
+							<a class="nav-link" href="register">Regístrate</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="contactar">Contactanos</a>
+						</li>
+						<li class="nav-item" th:if="${session.usuario != null && session.usuario.role.nombrerol == 'CLIENTE'}">
+							<a class="nav-link" href="profile">Perfil</a>
+						</li>
+						<li class="nav-item" th:if="${session.usuario != null && session.usuario.role.nombrerol == 'CLIENTE'}">
+						    <a class="nav-link" href="cerrarsesion">Cerrar Sesión</a>
+						</li>
+
+
+						
+					</ul>
+					<form class="form-inline my-2 my-lg-0">
+					</form>
+				</div>
+			</nav>
+		</div>
+	</div>
+	<!-- header section end -->
+	<div class="call_text_main">
+		<div class="container">
+			<div class="call_taital">
+				<div class="call_text"><a href="#"><i class="bi bi-geo-alt-fill"></i><span
+							class="padding_left_15">Madrid</span></a></div>
+				<div class="call_text"><a href="#"><i class="bi bi-telephone-fill"></i><span
+							class="padding_left_15">(+34) 912 345 678</span></a></div>
+				<div class="call_text"><a href="#"><i class="bi bi-envelope-fill"></i><span
+							class="padding_left_15">info.luxury@gmail.com</span></a></div>
+			</div>
+		</div>
+	</div>
+	<!-- CODIGO MITAD DE PAGINA  -->
+	<div class="main_section" layout:fragment="main">
+
+	</div>
+
+	<footer class="footer_section text-white">
+		<!-- Grid container -->
+		<div class="container p-4 pb-0">
+			<!-- Section: Links -->
+			<section class="footer_section_2">
+				<!--Grid row-->
+				<div class="row">
+					<!-- Grid column: Contacto end -->
+					<!-- Grid column: Ubicacion start -->
+					<div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3 text-left">
+						<h6 class="text-uppercase mb-4 font-weight-bold text-white text-center">Ubicación</h6>
+						<div class="map-area">
+							<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3039.619242593613!2d-3.7213677242162535!3d40.37296627144661!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd4227a0c76de045%3A0xb86372c70d662304!2sIES%20P%C3%ADo%20Baroja!5e0!3m2!1ses!2ses!4v1684397034934!5m2!1ses!2ses" class="h-100 w-100" width="350" height="150" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+						</div>
+					</div>
+					<!-- Grid column: Ubicacion end -->
+					<!-- Grid column Contacto start -->
+					<div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3 text-left">
+						<h6 class="text-uppercase mb-4 font-weight-bold text-white text-center">Contacto</h6>
+						<p><i class="bi bi-house mr-3"></i> C. Tolosa, 2, 4, 28041 Madrid</p>
+						<p><i class="bi bi-envelope mr-3"></i> info.luxury@gmail.com</p>
+						<p><i class="bi bi-telephone mr-3"></i> (+34) 912 345 678</p>
+					</div>
+					<!-- Grid column: Contacto end -->
+					<!-- Grid column: Redes sociales start -->
+					<div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+						<h6 class="text-uppercase mb-4 font-weight-bold text-white">Síguenos</h6>
+						<!-- Facebook -->
+						<a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
+								class="bi bi-facebook"></i></a>
+
+						<!-- Twitter -->
+						<a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
+								class="bi bi-twitter"></i></a>
+
+						<!-- Google -->
+						<a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
+								class="bi bi-google"></i></a>
+
+						<!-- Instagram -->
+						<a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
+								class="bi bi-instagram"></i></a>
+
+						<!-- Linkedin -->
+						<a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
+								class="bi bi-linkedin"></i></a>
+
+						<!-- Github -->
+						<a class="btn btn-outline-light btn-floating m-1" href="#!" role="button"><i
+								class="bi bi-github"></i></a>
+					</div>
+					<!-- Grid column: Redes sociales end -->
+				</div>
+			</section>
+			<!-- Section: Links -->
+		</div>
+		<!-- Grid container -->
+	</footer>
+	<!-- Copyright -->
+	<div class="copyright_section text-center p-3" style="background-color: black;">
+		© 2023 Copyright: <a class="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+	</div>
+	<!-- Copyright -->
+
+	<script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
+
+	<script src="@{/resources/css/form-validation.js}"></script>
+</body>
+
+</html>

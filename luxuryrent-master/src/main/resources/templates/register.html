@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{layout/layout}">
+<div layout:fragment="main">
+	<!-- Section: Design Block -->
+	<section class="about_section">
+		<!-- Jumbotron -->
+		<div class="px-4 py-5 px-md-5 text-center text-lg-start">
+			<div class="container">
+				<div class="row gx-lg-5 align-items-center">
+					<div class="col-lg-6 mb-5 mb-lg-0">
+						<h1 class="banner_taital ">
+							La mejor opción <br /> <span style="color: #FE5B29;">para
+								alquilar</span>
+						</h1>
+						<p style="color: hsl(217, 10%, 50.8%)">En Luxury Rent, nos
+							especializamos en ofrecerte la mejor opción para alquilar
+							vehículos de lujo a corto y largo plazo. Nuestro objetivo es
+							brindarte una experiencia excepcional, con una amplia selección
+							de vehículos de alta gama y un servicio de calidad. Disfruta de
+							la libertad de conducir los mejores autos mientras viajas o te
+							desplazas por la ciudad.</p>
+					</div>
+					<div class="col-lg-6 mb-5 mb-lg-0">
+						<div class="card bg-glass" style="background-color: #eee;">
+							<div class="card-body py-5 px-md-5">
+								<form class="h-70" th:action="@{/register}"
+										th:object="${usuariosForm}" method="post">
+									<h1 class="banner_taital mb-4">
+										REGI<span style="color: #FE5B29;">STRO</span>
+									</h1>
+									<p class="text-primary" th:text=${mensaje}></p>
+									<!-- 2 column grid layout with text inputs for the first and last names -->
+									<div class="row">
+										<div class="col-md-6 mb-4">
+											<div class="form-floating">
+												<input placeholder="Nombre" type="text" th:field="*{nombre}"
+												class="form-control" id="nombre" name="nombre"
+												th:required="true"
+												th:classappend="${#fields.hasErrors('nombre')}? 'is-invalid'" />
+												<label for="form3Example1">Nombre</label>
+											<div class="invalid-feedback">
+												<span th:if="${#fields.hasErrors('nombre')}"
+													th:errors="*{nombre}"></span>
+											</div>
+											</div>
+										</div>
+										<div class="col-md-6 mb-4">
+											<div class="form-floating">
+												<input placeholder="Apellidos" type="text" th:field="*{apellidos}"
+												class="form-control" id="apellidos" name="apellidos"
+												th:required="true"
+												th:classappend="${#fields.hasErrors('apellidos')}? 'is-invalid'" />
+												<label class="form-label" for="form3Example2">Apellidos</label>
+											<div class="invalid-feedback">
+												<span th:if="${#fields.hasErrors('apellidos')}"
+													th:errors="*{apellidos}"></span>
+											</div>
+											</div>
+										</div>
+									</div>
+									<div class="form-floating mb-4">
+										<input placeholder="DNI" type="text" th:field="*{dni}"
+												class="form-control" id="dni" name="dni" th:required="true"
+												th:classappend="${#fields.hasErrors('dni')}? 'is-invalid'" />
+										<label for="form3Example5">DNI</label>
+									<div class="invalid-feedback">
+										<span th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}"></span>
+									</div>
+									</div>
+									<div class="form-floating mb-4">
+										<input placeholder="Teléfono" type="tel" th:field="*{telefono}"
+												class="form-control" id="telefono" name="telefono"
+												th:required="true"
+												th:classappend="${#fields.hasErrors('telefono')}? 'is-invalid'" />
+										<label for="form3Example6">Teléfono</label>
+											<div class="invalid-feedback">
+												<span th:if="${#fields.hasErrors('telefono')}"
+													th:errors="*{telefono}"></span>
+											</div>
+									</div>
+									<div class="form-floating mb-4">
+										<input placeholder="Dirección" type="tel" th:field="*{direccion}"
+												class="form-control" id="direccion" name="direccion"
+												th:required="true"
+												th:classappend="${#fields.hasErrors('telefono')}? 'is-invalid'"/>
+										<label for="form3Example4">Dirección</label>
+									</div>	
+									<!-- Email input -->
+									<div class="form-floating mb-4">
+										<input 	placeholder="Correo electrónico" type="email"
+												th:field="*{email}" class="form-control" id="email"
+												name="email" th:required="true"
+												th:classappend="${#fields.hasErrors('email')}? 'is-invalid'" /> 
+										<label for="form3Example3">Correo electrónico</label>
+																					<div class="invalid-feedback">
+												<span th:if="${#fields.hasErrors('email')}"
+													th:errors="*{email}"></span>
+											</div>
+									</div>
+									<!-- Password input -->
+									<div class="form-floating mb-4">
+										<input placeholder="Contraseña" type="password"
+												th:field="*{password}" class="form-control" id="password"
+												name="password" th:required="true"
+												th:classappend="${#fields.hasErrors('password')}? 'is-invalid'" /> 
+										<label for="form3Example4">Contraseña</label>
+																					<div class="invalid-feedback">
+												<span th:if="${#fields.hasErrors('password')}"
+													th:errors="*{password}"></span>
+											</div>
+									</div>					
+
+									<!-- Submit button -->
+									<button type="submit"
+										class="btn btn-dark btn-block mb-4 font-weight-bold text-uppercase">
+										REGISTRARSE</button>
+
+									<!-- Register buttons -->
+									<div class="text-center">
+										<a href="/iniciarsesion" type="button" class="btn btn-dark">
+											Iniciar sesión
+										</a>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- Jumbotron -->
+	</section>
+	<!-- Section: Design Block -->
+</div>
+
+</html>

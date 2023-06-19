@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+	layout:decorate="~{layout/layout-dash}">
+
+<head>
+	<!-- Agregar los enlaces de Bootstrap 5 aquí -->
+	<!-- Agregar los enlaces de Bootstrap 5 aquí -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.7.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-DJihbMI6NYcyskmqrVqYus20l82IZK7NKEa+DZsH8UV8o3S0vo/e72SSYtJvv00S"
+    crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+	<main layout:fragment="main" id="main" class="main">
+		<section class="section dashboard">
+			<div class="row">
+				<!-- Left side columns -->
+				<div class="col-lg-8">
+					<div class="row">
+						<!-- Recent Sales -->
+						<div class="col-12">
+							<div class="card recent-sales overflow-auto">
+								<div class="card-body">
+									<h5 class="card-title">Vehiculos</h5>
+
+									<table class="table table-borderless datatable">
+										<thead>
+											<tr>
+												<th>Marca</th>
+												<th>Modelo</th>
+												<th>Matrícula</th>
+												<th>Kilometraje</th>
+												<th>Alquilado</th>
+												<th>Precio por día</th>
+												<th>Tipo</th>
+												<th>Año</th>
+												<th>Imagen</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr th:each="vehiculos:${listado}">
+												<td th:text="${vehiculos.marca}"></td>
+												<td th:text="${vehiculos.modelo}"></td>
+												<td th:text="${vehiculos.matricula}"></td>
+												<td th:text="${vehiculos.kilometraje}"></td>
+												<td th:text="${vehiculos.alquilado}"></td>
+												<td th:text="${vehiculos.preciopordia}"></td>
+												<td th:text="${vehiculos.tipo}"></td>
+												<td th:text="${vehiculos.anio}"></td>
+												<td><img th:src="${vehiculos.enlaceImagen}" width="100" height="80" />
+												</td>
+												<td>
+													<div class="btn-group">
+													<a th:href="@{/eliminarvehiculo(id=${vehiculos.id})}" class="btn btn-danger btn-sm btnDelete">
+													  <i class="bi bi-trash3"></i>
+													</a>
+													</div>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+
+								</div>
+
+							</div>
+						</div>
+						<!-- End Recent Sales -->
+					</div>
+				</div>
+				<!-- End Left side columns -->
+
+				<!-- Right side columns -->
+				<div class="col-lg-4">
+					<!-- Add Vehiculos -->
+					<div class="card">
+						<div class="card-body py-5 px-md-5">
+							<h5 class="card-title">Subir vehiculos</h5>
+							<form method="post" action="/cargarjsonveh" enctype="multipart/form-data">
+								<div class="form-floating mb-4">
+									<label class="form-label" for="customFile">Seleccione un archivo</label>
+									<input type="file" class="form-control" id="customFile" name="archivo" />
+								</div>
+								<!-- Submit button -->
+								<button type="submit"
+									class="btn btn-dark btn-block mb-4 font-weight-bold text-uppercase">Añadir</button>
+							</form>
+						</div>
+					</div>
+					<!-- End Add Vehiculos -->
+				</div>
+				<!-- End Right side columns -->
+			</div>
+		</section>
+	</main>
+
+</body>
+
+</html>
